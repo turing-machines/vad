@@ -128,7 +128,7 @@ static const int16_t kSmoothingUp = 32439;                // 0.99 in Q15.
 
 // TODO(bjornv): Move this function to vad_filterbank.c.
 // Downsampling filter based on splitting filter and allpass functions.
-void WebRtcVad_Downsampling(const int16_t* signal_in, int16_t* signal_out, int32_t* filter_state, size_t in_length) {
+inline void WebRtcVad_Downsampling(const int16_t* signal_in, int16_t* signal_out, int32_t* filter_state, size_t in_length) {
     int16_t tmp16_1 = 0, tmp16_2 = 0;
     int32_t tmp32_1 = filter_state[0];
     int32_t tmp32_2 = filter_state[1];
@@ -156,7 +156,7 @@ void WebRtcVad_Downsampling(const int16_t* signal_in, int16_t* signal_out, int32
 // Inserts |feature_value| into |low_value_vector|, if it is one of the 16
 // smallest values the last 100 frames. Then calculates and returns the median
 // of the five smallest values.
-int16_t WebRtcVad_FindMinimum(VadInstT* self, int16_t feature_value, int channel) {
+inline int16_t WebRtcVad_FindMinimum(VadInstT* self, int16_t feature_value, int channel) {
     int i = 0, j = 0;
     int position = -1;
     // Offset to beginning of the 16 minimum values in memory.
@@ -515,7 +515,7 @@ static void LogOfEnergy(const int16_t* data_in, size_t data_length, int16_t offs
     }
 }
 
-int16_t WebRtcVad_CalculateFeatures(VadInstT* self, const int16_t* data_in, size_t data_length, int16_t* features) {
+inline int16_t WebRtcVad_CalculateFeatures(VadInstT* self, const int16_t* data_in, size_t data_length, int16_t* features) {
     int16_t total_energy = 0;
     // We expect |data_length| to be 80, 160 or 240 samples, which corresponds to
     // 10, 20 or 30 ms in 8 kHz. Therefore, the intermediate downsampled data will
@@ -1057,7 +1057,7 @@ static int16_t GmmProbability(VadInstT* self, int16_t* features, int16_t total_p
 }
 
 // Initialize the VAD. Set aggressiveness mode to default value.
-int WebRtcVad_InitCore(VadInstT* self) {
+inline int WebRtcVad_InitCore(VadInstT* self) {
     int i;
 
     if (self == NULL) {
@@ -1113,7 +1113,7 @@ int WebRtcVad_InitCore(VadInstT* self) {
 }
 
 // Set aggressiveness mode
-int WebRtcVad_set_mode_core(VadInstT* self, int mode) {
+inline int WebRtcVad_set_mode_core(VadInstT* self, int mode) {
     int return_value = 0;
 
     switch (mode) {
@@ -1156,7 +1156,7 @@ int WebRtcVad_set_mode_core(VadInstT* self, int mode) {
 // Calculate VAD decision by first extracting feature values and then calculate
 // probability for both speech and background noise.
 
-int WebRtcVad_CalcVad48khz(VadInstT* inst, const int16_t* speech_frame, size_t frame_length) {
+inline int WebRtcVad_CalcVad48khz(VadInstT* inst, const int16_t* speech_frame, size_t frame_length) {
     int vad;
     size_t i;
     int16_t speech_nb[240];  // 30 ms in 8 kHz.
@@ -1177,7 +1177,7 @@ int WebRtcVad_CalcVad48khz(VadInstT* inst, const int16_t* speech_frame, size_t f
     return vad;
 }
 
-int WebRtcVad_CalcVad32khz(VadInstT* inst, const int16_t* speech_frame, size_t frame_length) {
+inline int WebRtcVad_CalcVad32khz(VadInstT* inst, const int16_t* speech_frame, size_t frame_length) {
     size_t len;
     int vad;
     int16_t speechWB[480];  // Downsampled speech frame: 960 samples (30ms in SWB)
@@ -1197,7 +1197,7 @@ int WebRtcVad_CalcVad32khz(VadInstT* inst, const int16_t* speech_frame, size_t f
     return vad;
 }
 
-int WebRtcVad_CalcVad16khz(VadInstT* inst, const int16_t* speech_frame, size_t frame_length) {
+inline int WebRtcVad_CalcVad16khz(VadInstT* inst, const int16_t* speech_frame, size_t frame_length) {
     size_t len;
     int vad;
     int16_t speechNB[240];  // Downsampled speech frame: 480 samples (30ms in WB)
@@ -1211,7 +1211,7 @@ int WebRtcVad_CalcVad16khz(VadInstT* inst, const int16_t* speech_frame, size_t f
     return vad;
 }
 
-int WebRtcVad_CalcVad8khz(VadInstT* inst, const int16_t* speech_frame, size_t frame_length) {
+inline int WebRtcVad_CalcVad8khz(VadInstT* inst, const int16_t* speech_frame, size_t frame_length) {
     int16_t feature_vector[kNumChannels], total_power;
 
     // Get power in the bands

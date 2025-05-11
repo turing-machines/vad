@@ -16,7 +16,7 @@ void WebRtcSpl_DownBy2ShortToInt(const int16_t *in, int32_t len, int32_t *out, i
 
 void WebRtcSpl_LPBy2IntToInt(const int32_t *in, int32_t len, int32_t *out, int32_t *state);
 
-void RTC_NO_SANITIZE("signed-integer-overflow")
+inline void RTC_NO_SANITIZE("signed-integer-overflow")
     WebRtcSpl_DownBy2IntToShort(int32_t *in, int32_t len, int16_t *out, int32_t *state) {
     int32_t tmp0, tmp1, diff;
     int32_t i;
@@ -93,7 +93,7 @@ void RTC_NO_SANITIZE("signed-integer-overflow")
     }
 }
 
-void RTC_NO_SANITIZE("signed-integer-overflow")
+inline void RTC_NO_SANITIZE("signed-integer-overflow")
     WebRtcSpl_DownBy2ShortToInt(const int16_t *in, int32_t len, int32_t *out, int32_t *state) {
     int32_t tmp0, tmp1, diff;
     int32_t i;
@@ -157,7 +157,7 @@ void RTC_NO_SANITIZE("signed-integer-overflow")
     in--;
 }
 
-void RTC_NO_SANITIZE("signed-integer-overflow")
+inline void RTC_NO_SANITIZE("signed-integer-overflow")
     WebRtcSpl_LPBy2IntToInt(const int32_t *in, int32_t len, int32_t *out, int32_t *state) {
     int32_t tmp0, tmp1, diff;
     int32_t i;

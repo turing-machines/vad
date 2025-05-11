@@ -64,7 +64,7 @@ void WebRtcSpl_ResetResample48khzTo8khz(WebRtcSpl_State48khzTo8khz* state);
  * END OF RESAMPLING FUNCTIONS
  ************************************************************/
 
-int32_t WebRtcSpl_DivW32W16(int32_t num, int16_t den) {
+inline int32_t WebRtcSpl_DivW32W16(int32_t num, int16_t den) {
     // Guard against division with 0
     if (den != 0) {
         return (int32_t)(num / den);
@@ -73,7 +73,7 @@ int32_t WebRtcSpl_DivW32W16(int32_t num, int16_t den) {
     }
 }
 
-int32_t WebRtcSpl_Energy(int16_t* vector, size_t vector_length, int* scale_factor) {
+inline int32_t WebRtcSpl_Energy(int16_t* vector, size_t vector_length, int* scale_factor) {
     int32_t en = 0;
     size_t i;
     int scaling = WebRtcSpl_GetScalingSquare(vector, vector_length, vector_length);
@@ -89,8 +89,8 @@ int32_t WebRtcSpl_Energy(int16_t* vector, size_t vector_length, int* scale_facto
     return en;
 }
 
-int16_t WebRtcSpl_GetScalingSquare(int16_t* in_vector, size_t in_vector_length, size_t times) {
-    int16_t nbits = WebRtcSpl_GetSizeInBits((uint32_t)times);
+inline int16_t WebRtcSpl_GetScalingSquare(int16_t* in_vector, size_t in_vector_length, size_t times) {
+    int16_t nbits = WebRtcSpl_GetSizeInBits(static_cast<uint32_t>(times));
     size_t i;
     int16_t smax = -1;
     int16_t sabs;
@@ -112,7 +112,7 @@ int16_t WebRtcSpl_GetScalingSquare(int16_t* in_vector, size_t in_vector_length, 
 }
 
 // interpolation coefficients
-static const int16_t kCoefficients48To32[2][8] = {{778, -2050, 1087, 23285, 12903, -3783, 441, 222},
+static constexpr int16_t kCoefficients48To32[2][8] = {{778, -2050, 1087, 23285, 12903, -3783, 441, 222},
                                                   {222, 441, -3783, 12903, 23285, 1087, -2050, 778}};
 
 //   Resampling ratio: 2/3
@@ -120,7 +120,7 @@ static const int16_t kCoefficients48To32[2][8] = {{778, -2050, 1087, 23285, 1290
 // output: int32_t (shifted 15 positions to the left, + offset 16384) :: size 2 * K
 //      K: number of blocks
 
-void WebRtcSpl_Resample48khzTo32khz(const int32_t* In, int32_t* Out, size_t K) {
+inline void WebRtcSpl_Resample48khzTo32khz(const int32_t* In, int32_t* Out, size_t K) {
     /////////////////////////////////////////////////////////////
     // Filter operation:
     //
@@ -169,8 +169,8 @@ void WebRtcSpl_Resample48khzTo32khz(const int32_t* In, int32_t* Out, size_t K) {
 
 namespace webrtc {
 // 48 -> 8 resampler
-void WebRtcSpl_Resample48khzTo8khz(const int16_t* in, int16_t* out, WebRtcSpl_State48khzTo8khz* state,
-                                   int32_t* tmpmem) {
+inline void WebRtcSpl_Resample48khzTo8khz(const int16_t* in, int16_t* out, WebRtcSpl_State48khzTo8khz* state,
+                                          int32_t* tmpmem) {
     ///// 48 --> 24 /////
     // int16_t  in[480]
     // int32_t out[240]
@@ -200,7 +200,7 @@ void WebRtcSpl_Resample48khzTo8khz(const int16_t* in, int16_t* out, WebRtcSpl_St
 }
 
 // initialize state of 48 -> 8 resampler
-void WebRtcSpl_ResetResample48khzTo8khz(WebRtcSpl_State48khzTo8khz* state) {
+inline void WebRtcSpl_ResetResample48khzTo8khz(WebRtcSpl_State48khzTo8khz* state) {
     memset(state->S_48_24, 0, 8 * sizeof(int32_t));
     memset(state->S_24_24, 0, 16 * sizeof(int32_t));
     memset(state->S_24_16, 0, 8 * sizeof(int32_t));

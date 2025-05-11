@@ -73,22 +73,22 @@ static const int kValidRates[] = {8000, 16000, 32000, 48000};
 static const size_t kRatesSize = sizeof(kValidRates) / sizeof(*kValidRates);
 static const int kMaxFrameLengthMs = 30;
 
-VadInst* WebRtcVad_Create() {
+inline VadInst* WebRtcVad_Create() {
     VadInstT* self = (VadInstT*)malloc(sizeof(VadInstT));
     self->init_flag = 0;
     return (VadInst*)self;
 }
 
-void WebRtcVad_Free(VadInst* handle) { free(handle); }
+inline void WebRtcVad_Free(VadInst* handle) { free(handle); }
 
 // TODO(bjornv): Move WebRtcVad_InitCore() code here.
-int WebRtcVad_Init(VadInst* handle) {
+inline int WebRtcVad_Init(VadInst* handle) {
     // Initialize the core VAD component.
     return WebRtcVad_InitCore((VadInstT*)handle);
 }
 
 // TODO(bjornv): Move WebRtcVad_set_mode_core() code here.
-int WebRtcVad_set_mode(VadInst* handle, int mode) {
+inline int WebRtcVad_set_mode(VadInst* handle, int mode) {
     VadInstT* self = (VadInstT*)handle;
 
     if (handle == NULL) {
@@ -101,7 +101,7 @@ int WebRtcVad_set_mode(VadInst* handle, int mode) {
     return WebRtcVad_set_mode_core(self, mode);
 }
 
-int WebRtcVad_Process(VadInst* handle, int fs, const int16_t* audio_frame, size_t frame_length) {
+inline int WebRtcVad_Process(VadInst* handle, int fs, const int16_t* audio_frame, size_t frame_length) {
     int vad = -1;
     VadInstT* self = (VadInstT*)handle;
 
@@ -131,7 +131,7 @@ int WebRtcVad_Process(VadInst* handle, int fs, const int16_t* audio_frame, size_
     return vad > 0 ? 1 : vad;
 }
 
-int WebRtcVad_ValidRateAndFrameLength(int rate, size_t frame_length) {
+inline int WebRtcVad_ValidRateAndFrameLength(int rate, size_t frame_length) {
     int return_value = -1;
     size_t i;
     int valid_length_ms;
