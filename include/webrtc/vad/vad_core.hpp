@@ -3,10 +3,14 @@
 #include "webrtc/singal_processing/singal_processing_library.hpp"
 
 namespace webrtc {
-enum { kNumChannels = 6 };   // Number of frequency bands (named channels).
-enum { kNumGaussians = 2 };  // Number of Gaussians per channel in the GMM.
-enum { kTableSize = kNumChannels * kNumGaussians };
-enum { kMinEnergy = 10 };  // Minimum energy required to trigger audio signal.
+
+// Use a single enum to avoid deprecated enum-enum conversion warning
+enum VadConstants {
+    kNumChannels = 6,    // Number of frequency bands (named channels).
+    kNumGaussians = 2,   // Number of Gaussians per channel in the GMM.
+    kTableSize = kNumChannels * kNumGaussians,
+    kMinEnergy = 10      // Minimum energy required to trigger audio signal.
+};
 
 typedef struct VadInstT_ {
     int vad;
